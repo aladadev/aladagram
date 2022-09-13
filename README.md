@@ -1,6 +1,6 @@
 # aladagram
 
-A new Flutter project.
+A instagram clone for now.
 
 ## Getting Started
 
