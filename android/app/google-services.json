@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "922393771514",
+    "project_id": "alagram-80283",
+    "storage_bucket": "alagram-80283.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922393771514:android:215c20076deb52d3653843",
+        "android_client_info": {
+          "package_name": "com.example.aladagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922393771514-j16mb3d20jhqvnhfh3v7gor1mp9o4b1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMIsgP-VBERb0Ck2Y7GLinjYjBPk2srDQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922393771514-j16mb3d20jhqvnhfh3v7gor1mp9o4b1o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
