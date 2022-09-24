@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:aladagram/resources/storage_method.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -13,6 +16,8 @@ class AuthMethods {
     required String password,
     required String userName,
     required String bio,
+    required BuildContext context,
+    // required Uint8List file,
   }) async {
     String result = 'Some Error Occured Dude!';
     try {
@@ -23,6 +28,7 @@ class AuthMethods {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
         print(cred.user!.uid);
+
         await _fireStore.collection('users').doc(cred.user!.uid).set({
           'username': userName,
           'email': email,
@@ -34,7 +40,11 @@ class AuthMethods {
       }
     } catch (error) {
       result = error.toString();
+    } finally {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(result)));
     }
+    print(result);
     return result;
   }
 }

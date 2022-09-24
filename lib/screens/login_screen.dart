@@ -2,8 +2,7 @@ import 'package:aladagram/screens/signup_screen.dart';
 import 'package:aladagram/utility/colors.dart';
 import 'package:aladagram/widgets/text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:flutter_svg/svg.dart';
 
 class LoginScreen extends StatefulWidget {
