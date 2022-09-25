@@ -17,7 +17,7 @@ class AuthMethods {
     required String userName,
     required String bio,
     required BuildContext context,
-    // required Uint8List file,
+    required Uint8List? file,
   }) async {
     String result = 'Some Error Occured Dude!';
     try {
@@ -37,6 +37,9 @@ class AuthMethods {
           'followers': [],
           'following': [],
         });
+        await StorageMethod()
+            .uploadImageToStorage('profilePic', file, false, cred);
+        result = 'Success';
       }
     } catch (error) {
       result = error.toString();

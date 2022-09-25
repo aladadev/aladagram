@@ -33,10 +33,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
-    setState(() {
-      image = im;
-    });
+    Uint8List? im = await pickImage(ImageSource.gallery);
+    if (im != null) {
+      setState(() {
+        image = im;
+      });
+    }
   }
 
   @override
@@ -128,6 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         userName: _userNameController.text,
                         bio: _bioController.text,
                         context: context,
+                        file: image,
                       );
                     },
                     child: Container(
