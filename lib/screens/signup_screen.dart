@@ -1,6 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:aladagram/resources/auth_method.dart';
+import 'package:aladagram/responsive/mobile_screen_layout.dart';
+import 'package:aladagram/responsive/responsive.dart';
+import 'package:aladagram/responsive/web_screen_layout.dart';
 import 'package:aladagram/screens/login_screen.dart';
 import 'package:aladagram/utility/colors.dart';
 import 'package:aladagram/utility/utils.dart';
@@ -23,6 +26,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _bioController = TextEditingController();
   final _userNameController = TextEditingController();
   Uint8List? image;
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -38,6 +42,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
       setState(() {
         image = im;
       });
+    }
+  }
+
+  signUpButton() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    String result = await AuthMethods().signUpUser(
+      email: _emailEditingController.text,
+      password: _passEditingController.text,
+      userName: _userNameController.text,
+      bio: _bioController.text,
+      context: context,
+      file: image,
+    );
+    setState(() {
+      isLoading = false;
+    });
+
+    showSnackBar(result, context);
+    if (result == 'Success') {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => ResponsiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout(),
+          ),
+        ),
+      );
     }
   }
 
@@ -123,16 +157,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 24,
                   ),
                   InkWell(
-                    onTap: () async {
-                      String result = await AuthMethods().signUpUser(
-                        email: _emailEditingController.text,
-                        password: _passEditingController.text,
-                        userName: _userNameController.text,
-                        bio: _bioController.text,
-                        context: context,
-                        file: image,
-                      );
-                    },
+                    onTap: signUpButton,
                     child: Container(
                       width: double.infinity,
                       alignment: Alignment.center,
@@ -147,7 +172,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ),
-                      child: const Text('Sign Up'),
+                      child: isLoading
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : const Text('Sign Up'),
                     ),
                   ),
                   Flexible(

@@ -1,5 +1,10 @@
+import 'package:aladagram/resources/auth_method.dart';
+import 'package:aladagram/responsive/mobile_screen_layout.dart';
+import 'package:aladagram/responsive/responsive.dart';
+import 'package:aladagram/responsive/web_screen_layout.dart';
 import 'package:aladagram/screens/signup_screen.dart';
 import 'package:aladagram/utility/colors.dart';
+import 'package:aladagram/utility/utils.dart';
 import 'package:aladagram/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +20,36 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailEditingController = TextEditingController();
   final _passEditingController = TextEditingController();
+  bool isLoading = false;
   @override
   void dispose() {
     super.dispose();
 
     _emailEditingController.dispose();
     _passEditingController.dispose();
+  }
+
+  signIn() async {
+    setState(() {
+      isLoading = true;
+    });
+    String result = await AuthMethods().signInUser(
+        email: _emailEditingController.text,
+        password: _passEditingController.text);
+    setState(() {
+      isLoading = false;
+    });
+    showSnackBar(result, context);
+    if (result == 'Login Successful') {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => ResponsiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout(),
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -64,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 24,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: signIn,
                   child: Container(
                     width: double.infinity,
                     alignment: Alignment.center,
@@ -79,7 +108,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    child: const Text('Login'),
+                    child: isLoading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text('Login'),
                   ),
                 ),
                 Flexible(

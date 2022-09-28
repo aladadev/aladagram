@@ -16,8 +16,6 @@ class StorageMethod {
       String downloadUrl = await snapshot.ref.getDownloadURL();
       return downloadUrl;
     } else {
-      UploadTask uploadTask = ref.putString('Null Photo');
-      TaskSnapshot snapshot = await uploadTask;
       return 'No Photo';
     }
   }

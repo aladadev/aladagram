@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:aladagram/models/usermodel.dart';
 import 'package:aladagram/resources/storage_method.dart';
+import 'package:aladagram/screens/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -19,35 +21,57 @@ class AuthMethods {
     required BuildContext context,
     required Uint8List? file,
   }) async {
-    String result = 'Some Error Occured Dude!';
+    String result = 'Please Enter The Form!';
     try {
-      if (email.isNotEmpty ||
-          password.isNotEmpty ||
-          userName.isNotEmpty ||
+      if (email.isNotEmpty &&
+          password.isNotEmpty &&
+          userName.isNotEmpty &&
           bio.isNotEmpty) {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
-        print(cred.user!.uid);
-
-        await _fireStore.collection('users').doc(cred.user!.uid).set({
-          'username': userName,
-          'email': email,
-          'password': password,
-          'bio': bio,
-          'followers': [],
-          'following': [],
-        });
-        await StorageMethod()
+        String photoUrl = await StorageMethod()
             .uploadImageToStorage('profilePic', file, false, cred);
+        UserModel userModel = UserModel(
+            email: email,
+            bio: bio,
+            photoUrl: photoUrl,
+            username: userName,
+            uid: cred.user!.uid,
+            followers: [],
+            following: [],
+            password: password);
+        await _fireStore
+            .collection('users')
+            .doc(cred.user!.uid)
+            .set(userModel.toJson());
+
         result = 'Success';
       }
     } catch (error) {
       result = error.toString();
-    } finally {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(result)));
     }
     print(result);
     return result;
+  }
+
+  Future<String> signInUser(
+      {required String email, required String password}) async {
+    String result = 'Please Enter The Form!';
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        result = 'Login Successful';
+      }
+    } catch (error) {
+      result = error.toString();
+    }
+    return result;
+  }
+
+  Future<void> signOut(BuildContext context) async {
+    await _auth.signOut();
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (((context) => LoginScreen()))));
   }
 }
