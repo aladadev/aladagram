@@ -1,5 +1,5 @@
 import 'package:aladagram/provider/user_provider.dart';
-import 'package:aladagram/utility/dimensions.dart';
+import 'package:aladagram/utility/global.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,27 +18,39 @@ class ResponsiveLayout extends StatefulWidget {
 }
 
 class _ResponsiveLayoutState extends State<ResponsiveLayout> {
+  bool isLoading = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     addData();
   }
 
   addData() async {
     UserProvider userProvider = Provider.of(context, listen: false);
+    setState(() {
+      isLoading = true;
+    });
     await userProvider.refreshUser();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: ((context, constraints) {
-        if (constraints.maxWidth > kWebScreenSize) {
-          return widget.webScreenLayout;
-        }
-        return widget.mobileScreenLayout;
-      }),
-    );
+    return isLoading
+        ? Center(
+            child: CircularProgressIndicator(
+              color: Colors.black,
+            ),
+          )
+        : LayoutBuilder(
+            builder: ((context, constraints) {
+              if (constraints.maxWidth > kWebScreenSize) {
+                return widget.webScreenLayout;
+              }
+              return widget.mobileScreenLayout;
+            }),
+          );
   }
 }

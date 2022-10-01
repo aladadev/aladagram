@@ -111,7 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           : const CircleAvatar(
                               radius: 64,
                               backgroundImage: NetworkImage(
-                                  'https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGJsYW5rJTIwcHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'),
+                                  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
                             ),
                       Positioned(
                         bottom: -10,
