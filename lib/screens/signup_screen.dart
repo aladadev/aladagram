@@ -28,14 +28,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Uint8List? image;
   bool isLoading = false;
 
-  @override
-  void dispose() {
-    super.dispose();
-
-    _emailEditingController.dispose();
-    _passEditingController.dispose();
-  }
-
   void selectImage() async {
     Uint8List? im = await pickImage(ImageSource.gallery);
     if (im != null) {
@@ -73,6 +65,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _emailEditingController.dispose();
+    _passEditingController.dispose();
   }
 
   @override

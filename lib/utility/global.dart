@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 const kWebScreenSize = 600;
 
 List<Widget> homeScreenItems = [
-  AddPostScreen(),
   Text('1'),
   Text('2'),
+  AddPostScreen(),
   Text('4'),
   Text('5'),
 ];

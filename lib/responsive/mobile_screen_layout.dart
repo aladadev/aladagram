@@ -53,39 +53,40 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         // onPageChanged: onChangedPage,
       ),
       bottomNavigationBar: CupertinoTabBar(
-          backgroundColor: mobileBackgroundColor,
-          onTap: navigationTapped,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: _page == 0 ? primaryColor : secondaryColor,
-              ),
+        backgroundColor: mobileBackgroundColor,
+        onTap: navigationTapped,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: _page == 0 ? primaryColor : secondaryColor,
             ),
-            BottomNavigationBarItem(
-                icon: Icon(
-              Icons.search,
-              color: _page == 1 ? primaryColor : secondaryColor,
-            )),
-            BottomNavigationBarItem(
+          ),
+          BottomNavigationBarItem(
               icon: Icon(
-                Icons.add,
-                color: _page == 2 ? primaryColor : secondaryColor,
-              ),
+            Icons.search,
+            color: _page == 1 ? primaryColor : secondaryColor,
+          )),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add,
+              color: _page == 2 ? primaryColor : secondaryColor,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.favorite,
-                color: _page == 3 ? primaryColor : secondaryColor,
-              ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.favorite,
+              color: _page == 3 ? primaryColor : secondaryColor,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
-                color: _page == 4 ? primaryColor : secondaryColor,
-              ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+              color: _page == 4 ? primaryColor : secondaryColor,
             ),
-          ]),
+          ),
+        ],
+      ),
     );
   }
 }

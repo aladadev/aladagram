@@ -38,8 +38,11 @@ class AuthMethods {
           bio.isNotEmpty) {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
-        String photoUrl = await StorageMethod()
-            .uploadImageToStorage('profilePic', file, false, cred);
+        String photoUrl = await StorageMethod().uploadImageToStorage(
+          'profilePic',
+          file,
+          false,
+        );
         UserModel userModel = UserModel(
             email: email,
             bio: bio,
@@ -59,7 +62,7 @@ class AuthMethods {
     } catch (error) {
       result = error.toString();
     }
-    print(result);
+
     return result;
   }
 
@@ -79,8 +82,8 @@ class AuthMethods {
   }
 
   Future<void> signOut(BuildContext context) async {
-    await _auth.signOut();
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (((context) => LoginScreen()))));
+    await _auth.signOut();
   }
 }

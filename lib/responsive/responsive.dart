@@ -18,7 +18,7 @@ class ResponsiveLayout extends StatefulWidget {
 }
 
 class _ResponsiveLayoutState extends State<ResponsiveLayout> {
-  bool isLoading = false;
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
@@ -39,7 +39,7 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? Center(
+        ? const Center(
             child: CircularProgressIndicator(
               color: Colors.black,
             ),
