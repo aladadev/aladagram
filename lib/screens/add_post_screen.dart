@@ -149,47 +149,54 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   ),
                 ],
               ),
-              body: Column(
-                children: [
-                  _isLoading
-                      ? LinearProgressIndicator()
-                      : const SizedBox(
-                          height: 20,
-                        ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundImage: NetworkImage(user.photoUrl),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        child: TextField(
-                          controller: descriptionController,
-                          decoration: const InputDecoration(
-                            hintText: 'Write a caption',
-                            border: InputBorder.none,
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _isLoading
+                        ? LinearProgressIndicator()
+                        : const SizedBox(
+                            height: 20,
                           ),
-                          maxLines: 8,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14.0,
+                          ),
+                          child: CircleAvatar(
+                            radius: 30,
+                            backgroundImage: NetworkImage(user.photoUrl),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 400,
-                    height: 400,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: MemoryImage(_file!),
+                        Expanded(
+                          child: SizedBox(
+                            child: TextField(
+                              controller: descriptionController,
+                              decoration: const InputDecoration(
+                                hintText: 'Write a caption',
+                                border: InputBorder.none,
+                              ),
+                              maxLines: 8,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 400,
+                      height: 400,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: MemoryImage(_file!),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
