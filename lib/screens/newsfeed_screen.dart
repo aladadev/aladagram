@@ -10,21 +10,25 @@ class NewsFeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mobileBackgroundColor,
-        title: SvgPicture.asset(
-          'assets/instagram.svg',
-          color: primaryColor,
-          height: 32,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.messenger_outline_rounded,
-            ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60),
+        child: AppBar(
+          toolbarHeight: 60,
+          backgroundColor: mobileBackgroundColor,
+          title: SvgPicture.asset(
+            'assets/instagram.svg',
+            color: primaryColor,
+            height: 32,
           ),
-        ],
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.messenger_outline_rounded,
+              ),
+            ),
+          ],
+        ),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),

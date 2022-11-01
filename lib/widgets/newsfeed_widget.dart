@@ -1,5 +1,6 @@
 import 'package:aladagram/models/usermodel.dart';
 import 'package:aladagram/provider/user_provider.dart';
+import 'package:aladagram/resources/firestore_method.dart';
 import 'package:aladagram/utility/colors.dart';
 import 'package:aladagram/widgets/like_animation.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,6 +20,7 @@ class NewsFeed extends StatefulWidget {
 
 class _NewsFeedState extends State<NewsFeed> {
   bool isLikeAnimating = false;
+  bool smallLikeAnimation = false;
   @override
   Widget build(BuildContext context) {
     final UserModel user = Provider.of<UserProvider>(context).getUser;
@@ -96,7 +98,12 @@ class _NewsFeedState extends State<NewsFeed> {
           ),
           // post photo showdown
           GestureDetector(
-            onDoubleTap: () {
+            onDoubleTap: () async {
+              await FireStoreMethods().likePost(
+                widget.snapshotdata['postId'],
+                user.uid,
+                widget.snapshotdata['likes'],
+              );
               setState(() {
                 isLikeAnimating = true;
               });
@@ -119,17 +126,17 @@ class _NewsFeedState extends State<NewsFeed> {
                   ),
                   opacity: isLikeAnimating ? 1 : 0,
                   child: LikeAnimation(
-                    child: const Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                      size: 120,
-                    ),
                     isAnimating: isLikeAnimating,
                     onEnd: () {
                       setState(() {
                         isLikeAnimating = false;
                       });
                     },
+                    child: const Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                      size: 120,
+                    ),
                   ),
                 ),
               ],
@@ -141,10 +148,18 @@ class _NewsFeedState extends State<NewsFeed> {
                 isAnimating: widget.snapshotdata['likes'].contains(user.uid),
                 smallLike: true,
                 child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
+                  onPressed: () async {
+                    await FireStoreMethods().likePost(
+                      widget.snapshotdata['postId'],
+                      user.uid,
+                      widget.snapshotdata['likes'],
+                    );
+                  },
+                  icon: Icon(
                     Icons.favorite,
-                    color: Colors.red,
+                    color: widget.snapshotdata['likes'].contains(user.uid)
+                        ? Colors.red
+                        : Colors.white,
                   ),
                 ),
               ),

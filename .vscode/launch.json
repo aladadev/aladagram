@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         
         {
             "name": "aladagram",
@@ -16,6 +17,12 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
+        },
+        {
+            "name": "aladagram (debug mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug"
         },
         {
             "name": "aladagram (release mode)",
