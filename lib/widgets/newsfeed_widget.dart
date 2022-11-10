@@ -1,8 +1,11 @@
 import 'package:aladagram/models/usermodel.dart';
 import 'package:aladagram/provider/user_provider.dart';
 import 'package:aladagram/resources/firestore_method.dart';
+import 'package:aladagram/screens/comment_screen.dart';
 import 'package:aladagram/utility/colors.dart';
+import 'package:aladagram/utility/utils.dart';
 import 'package:aladagram/widgets/like_animation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -19,8 +22,32 @@ class NewsFeed extends StatefulWidget {
 }
 
 class _NewsFeedState extends State<NewsFeed> {
+  int commentNum = 0;
   bool isLikeAnimating = false;
   bool smallLikeAnimation = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCommentsNum();
+  }
+
+  void getCommentsNum() async {
+    try {
+      var snapComment = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.snapshotdata['postId'])
+          .collection('comments')
+          .get();
+      commentNum = snapComment.docs.length;
+
+      setState(() {});
+    } catch (error) {
+      showSnackBar(error.toString(), context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final UserModel user = Provider.of<UserProvider>(context).getUser;
@@ -74,7 +101,11 @@ class _NewsFeedState extends State<NewsFeed> {
                           ]
                               .map(
                                 (e) => InkWell(
-                                  onTap: () {},
+                                  onTap: () async {
+                                    await FireStoreMethods().deletePost(
+                                        widget.snapshotdata['postId']);
+                                    Navigator.of(context).pop();
+                                  },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 12.0,
@@ -99,14 +130,14 @@ class _NewsFeedState extends State<NewsFeed> {
           // post photo showdown
           GestureDetector(
             onDoubleTap: () async {
+              setState(() {
+                isLikeAnimating = true;
+              });
               await FireStoreMethods().likePost(
                 widget.snapshotdata['postId'],
                 user.uid,
                 widget.snapshotdata['likes'],
               );
-              setState(() {
-                isLikeAnimating = true;
-              });
             },
             child: Stack(
               alignment: Alignment.center,
@@ -209,14 +240,14 @@ class _NewsFeedState extends State<NewsFeed> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: 'username',
+                          text: widget.snapshotdata['username'],
                           style:
                               Theme.of(context).textTheme.bodyText2!.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                         ),
                         TextSpan(
-                          text: ' ${widget.snapshotdata['description']}',
+                          text: '  ${widget.snapshotdata['description']}',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ],
@@ -224,18 +255,43 @@ class _NewsFeedState extends State<NewsFeed> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) {
+                        return CommentScreen(
+                          snapData: widget.snapshotdata,
+                        );
+                      },
+                    ));
+                  },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       vertical: 4,
                     ),
-                    child: Text(
-                      'View all 100 comments...',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: secondaryColor,
-                      ),
-                    ),
+                    child: Text('View all $commentNum comments!'),
+                    // child: StreamBuilder(
+                    //     stream: FirebaseFirestore.instance
+                    //         .collection('posts')
+                    //         .doc(widget.snapshotdata['postId'])
+                    //         .collection('comments')
+                    //         .snapshots(),
+                    //     builder: (context,
+                    //         AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                    //             snapshot) {
+                    //       if (snapshot.connectionState ==
+                    //           ConnectionState.waiting) {
+                    //         return const Center(
+                    //           child: CircularProgressIndicator(),
+                    //         );
+                    //       }
+                    //       return Text(
+                    //         'View all ${snapshot.data!.docs.length} comments',
+                    //         style: const TextStyle(
+                    //           fontSize: 14,
+                    //           color: secondaryColor,
+                    //         ),
+                    //       );
+                    //     }),
                   ),
                 ),
                 Container(

@@ -53,7 +53,7 @@ class _LikeAnimationState extends State<LikeAnimation>
       await animationController.reverse();
       await Future.delayed(
         const Duration(
-          milliseconds: 300,
+          milliseconds: 50,
         ),
       );
 
