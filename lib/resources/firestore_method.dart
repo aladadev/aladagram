@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:aladagram/models/postmodel.dart';
 import 'package:aladagram/resources/storage_method.dart';
+import 'package:aladagram/utility/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
@@ -88,6 +89,30 @@ class FireStoreMethods {
       await _firestore.collection('posts').doc(postId).delete();
     } catch (error) {
       print(error.toString());
+    }
+  }
+
+  Future<void> followUser(String uid, String followID) async {
+    try {
+      var snap = await _firestore.collection('users').doc(uid).get();
+      List following = snap.data()!['following'];
+      if (following.contains(followID)) {
+        await _firestore.collection('users').doc(followID).update({
+          'followers': FieldValue.arrayRemove([uid]),
+        });
+        await _firestore.collection('users').doc(uid).update({
+          'following': FieldValue.arrayRemove([followID]),
+        });
+      } else {
+        await _firestore.collection('users').doc(followID).update({
+          'followers': FieldValue.arrayUnion([uid]),
+        });
+        await _firestore.collection('users').doc(uid).update({
+          'following': FieldValue.arrayUnion([followID]),
+        });
+      }
+    } catch (e) {
+      print('problem with firestore method followuser');
     }
   }
 }

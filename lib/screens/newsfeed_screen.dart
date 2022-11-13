@@ -1,4 +1,5 @@
 import 'package:aladagram/utility/colors.dart';
+import 'package:aladagram/utility/global.dart';
 import 'package:aladagram/widgets/newsfeed_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -9,27 +10,32 @@ class NewsFeedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final devicewidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: AppBar(
-          toolbarHeight: 60,
-          backgroundColor: mobileBackgroundColor,
-          title: SvgPicture.asset(
-            'assets/instagram.svg',
-            color: primaryColor,
-            height: 32,
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.messenger_outline_rounded,
+      appBar: devicewidth > kWebScreenSize
+          ? null
+          : PreferredSize(
+              preferredSize: Size.fromHeight(60),
+              child: AppBar(
+                toolbarHeight: 60,
+                backgroundColor: devicewidth > kWebScreenSize
+                    ? webBackgroundColor
+                    : mobileBackgroundColor,
+                title: SvgPicture.asset(
+                  'assets/instagram.svg',
+                  color: primaryColor,
+                  height: 32,
+                ),
+                actions: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.messenger_outline_rounded,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),
         builder: (context,
@@ -44,8 +50,15 @@ class NewsFeedScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
-                return NewsFeed(
-                  snapshotdata: snapshot.data!.docs[index],
+                return Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal:
+                        devicewidth > kWebScreenSize ? devicewidth * 0.3 : 0,
+                    vertical: devicewidth > kWebScreenSize ? 15 : 0,
+                  ),
+                  child: NewsFeed(
+                    snapshotdata: snapshot.data!.docs[index],
+                  ),
                 );
               },
             );

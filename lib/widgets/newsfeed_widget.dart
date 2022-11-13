@@ -50,6 +50,7 @@ class _NewsFeedState extends State<NewsFeed> {
 
   @override
   Widget build(BuildContext context) {
+    final _devicewidth = MediaQuery.of(context).size.width;
     final UserModel user = Provider.of<UserProvider>(context).getUser;
     return Container(
       padding: const EdgeInsets.symmetric(

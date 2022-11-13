@@ -4,6 +4,7 @@ import 'package:aladagram/responsive/responsive.dart';
 import 'package:aladagram/responsive/web_screen_layout.dart';
 import 'package:aladagram/screens/signup_screen.dart';
 import 'package:aladagram/utility/colors.dart';
+import 'package:aladagram/utility/global.dart';
 import 'package:aladagram/utility/utils.dart';
 import 'package:aladagram/widgets/text_field.dart';
 import 'package:flutter/material.dart';
@@ -54,21 +55,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: (() => FocusScope.of(context).unfocus()),
       child: Scaffold(
         body: SafeArea(
           child: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 32,
-            ),
+            padding: deviceWidth < kWebScreenSize
+                ? const EdgeInsets.symmetric(horizontal: 32)
+                : EdgeInsets.symmetric(horizontal: deviceWidth / 3),
             width: double.infinity,
             child: Column(
               children: [
-                Flexible(
-                  flex: 1,
-                  child: Container(),
-                ),
+                const Spacer(),
+                // Flexible(
+                //   flex: 1,
+                //   child: Container(),
+                // ),
                 SvgPicture.asset(
                   'assets/instagram.svg',
                   color: primaryColor,
@@ -115,10 +118,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         : const Text('Login'),
                   ),
                 ),
-                Flexible(
-                  flex: 1,
-                  child: Container(),
-                ),
+                // Flexible(
+                //   flex: 1,
+                //   child: Container(),
+                // ),
+                const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
